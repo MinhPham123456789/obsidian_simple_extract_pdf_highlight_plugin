@@ -80,6 +80,7 @@ export default class PDFAnnotationPlugin extends Plugin {
 		let currentFolder = ''
 		// console.log("all annots", grandtotal)
 		grandtotal.forEach((a) => {
+			console.log(a);
 			// print main Title when Topic changes (and settings allow)
 			if (this.settings.sortByTopic) {
 				if (topic != a.topic) {
@@ -89,17 +90,17 @@ export default class PDFAnnotationPlugin extends Plugin {
 				}
 			}
 
-			if (this.settings.useFolderNames) {
-				if (currentFolder != a.folder) {
-					currentFolder = a.folder
-					text += `## ${currentFolder}\n`
-				}
-			} else {
-				if (currentFolder != a.file.name) {
-					currentFolder = a.file.name
-					text += `## ${currentFolder}\n`
-				}  
-			}
+			// if (this.settings.useFolderNames) {
+			// 	if (currentFolder != a.folder) {
+			// 		currentFolder = a.folder
+			// 		text += `## ${currentFolder}\n`
+			// 	}
+			// } else {
+			// 	if (currentFolder != a.file.name) {
+			// 		currentFolder = a.file.name
+			// 		text += `## ${currentFolder}\n`
+			// 	}  
+			// }
 
 			if (a.subtype == 'Text') {
 				text += note(a)
@@ -146,24 +147,24 @@ export default class PDFAnnotationPlugin extends Plugin {
 		this.addRibbonIcon('pdf-file', 'PDF Highlights', () => {
 			this.extract_single();
 		});
-		this.addCommand({
-			id: 'extract-annotations-single',
-			name: 'Extract PDF Annotations on single file',
-			checkCallback: (checking : boolean) => {
-				const file = this.app.workspace.getActiveFile();
-				const bookParentPath = file.parent.path;
-				if (file != null && file.extension === 'pdf') {
-					if (!checking) {
-						// load file if (not only checking) && conditions are valid
-						this.loadSinglePDFFile(file, bookParentPath)
-					}
-					return true
-				} else {
-					const warning_message = new Notice("Must open a pdf document!")
-					return false
-				}
-			} 	
-		})
+		// this.addCommand({
+		// 	id: 'extract-annotations-single',
+		// 	name: 'Extract PDF Annotations on single file',
+		// 	checkCallback: (checking : boolean) => {	// This is the line where the issue happens when open commnd palette
+		// 		const file = this.app.workspace.getActiveFile();
+		// 		const bookParentPath = file.parent.path;
+		// 		if (file != null && file.extension === 'pdf') {
+		// 			if (!checking) {
+		// 				// load file if (not only checking) && conditions are valid
+		// 				this.loadSinglePDFFile(file, bookParentPath)
+		// 			}
+		// 			return true
+		// 		} else {
+		// 			const warning_message = new Notice("Must open a pdf document!")
+		// 			return false
+		// 		}
+		// 	} 	
+		// })
 
 		// this.addCommand({
 		// 	id: 'extract-annotations',
